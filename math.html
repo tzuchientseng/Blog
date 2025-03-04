@@ -1,28 +1,40 @@
-<!DOCTYPE html><html lang="zh-tw"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Math</title><link rel="icon" href="images/favicon.ico"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous"><link href="css/fullpage.css" rel="stylesheet"><link href="css/mathCustom.css" rel="stylesheet"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11"></head><body><br><br><nav class="navbar navbar-expand-lg navbar-light fixed-top"><a href="index.html" @click="scrollToTop"><img class="logo" src="images/logo.svg" alt="Back to top!" style="width:7%;height:auto;transition:transform .3s ease;transform:scale(1.1)" onmouseover='this.style.transform="scale(1.2)"' onmouseout='this.style.transform="scale(1.1)"'></a><div class="container-fluid"><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="navbarNav"><ul class="navbar-nav mx-auto"><li class="nav-item"><a class="nav-link" href="index.html">Introduction</a></li><li class="nav-item"><a class="nav-link" href="magic.html">Magic Show</a></li><li class="nav-item"><a class="nav-link" href="music.html">Music Series</a></li><li class="nav-item"><a class="nav-link" href="math.html">Math Kits</a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="myCodeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">My Portfolio</a><ul class="dropdown-menu" aria-labelledby="myCodeDropdown"><li><a class="dropdown-item" href="essay/myAPI.html">My Open API</a></li><li><a class="dropdown-item" href="essay/wheel.html">Random Wheel</a></li><li><a class="dropdown-item" href="essay/work.html">Random Work Table</a></li><li><a class="dropdown-item" href="essay/nba.html">NBA G.O.A.T. Candidates</a></li><li><a class="dropdown-item" href="essay/stock.html">Stocks Analysis</a></li></ul></li><li class="nav-item"><a class="nav-link" href="about.html">About Me</a></li></ul></div></div></nav><div id="app" class="container mt-5"><h1 class="mb-4">Math Kits</h1><div class="row"><div class="col-md-6"><form @submit.prevent="calculate"><div class="mb-3"><label for="toolSelect" class="form-label">Select Calculation Tool:</label><select class="form-select" v-model="selectedTool" aria-placeholder="Select"><option value="" disabled="disabled" selected="selected" hidden>Click to select</option><option value="random_number_generator">Random Number Generator</option><option value="average_variance_stdDev">Average, Variance, Standard Deviation</option><option value="cross_dot_product">Vector Cross Product, Vector Dot Product</option><option value="permutation_combination">Permutation, Combination, Homogeneous</option></select></div><div v-if="selectedTool === 'random_number_generator'"><div class="mb-3"><label for="quantity" class="form-label">Number of Random Numbers:</label><input type="number" class="form-control" id="quantity" v-model="quantity" min="1"></div><div class="mb-3"><label for="min" class="form-label">Minimum Number:</label><input type="number" class="form-control" id="min" v-model="min"></div><div class="mb-3"><label for="max" the class="form-label">Maximum Number:</label><input type="number" class="form-control" id="max" v-model="max"></div></div><div v-else-if="selectedTool === 'average_variance_stdDev'"><div class="mb-3"><label for="numbers" class="form-label">Enter numbers (space-separated):</label><input type="text" class="form-control" id="numbers" v-model="inputNumbers"></div></div><div v-else-if="selectedTool === 'cross_dot_product'"><div class="mb-3"><label for="vectorA" class="form-label">Enter Vector A (space-separated):</label><input type="text" class="form-control" id="vectorA" v-model="vectorA"></div><div class="mb-3"><label for="vectorB" the class="form-label">Enter Vector B (space-separated):</label><input type="text" class="form-control" id="vectorB" v-model="vectorB"></div></div><div v-else-if="selectedTool === 'permutation_combination'"><div class="mb-3"><label for="n" class="form-label">Total Items (n):</label><input type="number" class="form-control" id="n" v-model="n"></div><div class="mb-3"><label for="r" class="form-label">Selected Items (r):</label><input type="number" class="form-control" id="r" v-model="r"></div></div><button type="submit" class="btn btn-primary">Calculate</button></form></div><div class="col-md-6"><div class="col-md-6"><div v-if="selectedTool === 'random_number_generator' && randomNumbers" class="alert alert-success mt-3"><p>Random Numbers:</p><p>{{ randomNumbers.join(', ') }}</p></div><div v-if="selectedTool === 'average_variance_stdDev'"><template v-if="average || variance || standardDeviation"><div v-if="average" class="alert alert-success mt-3"><p>Average: {{ average }}</p></div><div v-if="variance" class="alert alert-success mt-3"><p>Variance: {{ variance }}</p></div><div v-if="standardDeviation" class="alert alert-success mt-3"><p>Standard Deviation: {{ standardDeviation }}</p></div></template><div v-else class="alert alert-warning mt-3"><p>Please enter some numbers to calculate their statistics.</p></div></div><div v-else-if="selectedTool === 'cross_dot_product'"><template v-if="crossResult || dotResult"><div v-if="crossResult" class="alert alert-success mt-3"><p>Cross Product Result: ({{ crossResult.x }}, {{ crossResult.y }}, {{ crossResult.z }})</p></div><div v-if="dotResult" class="alert alert-success mt-3"><p>Dot Product Result: {{ dotResult }}</p></div></template><div v-else class="alert alert-warning mt-3"><p>Please enter vectors to calculate their cross and dot products.</p></div></div><div v-if="selectedTool === 'permutation_combination'"><template v-if="permResult || combResult || homProdResult"><div v-if="permResult" class="alert alert-success mt-3"><p>Permutation (P): {{ permResult }}</p></div><div v-if="combResult" class="alert alert-success mt-3"><p>Combination (C): {{ combResult }}</p></div><div v-if="homProdResult" class="alert alert-success mt-3"><p>Homogeneous Product (H): {{ homProdResult }}</p></div></template><div v-else class="alert alert-warning mt-3"><p>Please enter values for n and r to compute permutations, combinations, and homogeneous products.</p></div></div></div></div><iframe src="https://lottie.host/embed/3143bdce-e8ff-44cb-b623-890d1059466a/2e9PjhsRN5.json"></iframe></div></div><div style="display:flex;justify-content:center;align-items:center;height:10vh"><iframe src="https://lottie.host/embed/84abc4be-1cca-4db2-980c-e796b1943206/OqXlE73zWi.json"></iframe></div><script src="https://unpkg.com/vue@3/dist/vue.global.js"></script><script>const {
+<!DOCTYPE html><html lang="zh-tw"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Math</title><link rel="icon" href="images/favicon.ico"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous"><link href="css/fullpage.css" rel="stylesheet"><link href="css/mathCustom.css" rel="stylesheet"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11"></head><body class="bg-secondary-subtle"><br><br><nav class="navbar navbar-expand-lg navbar-light fixed-top bg-secondary-subtle"><a href="index.html" @click="scrollToTop"><img class="logo" src="images/logo.svg" alt="Back to top!" style="width:7%;height:auto;transition:transform .3s ease;transform:scale(1.1)" onmouseover='this.style.transform="scale(1.2)"' onmouseout='this.style.transform="scale(1.1)"'></a><div class="container-fluid"><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="navbarNav"><ul class="navbar-nav mx-auto"><li class="nav-item"><a class="nav-link" href="index.html">Introduction</a></li><li class="nav-item"><a class="nav-link" href="magic.html">Magic Show</a></li><li class="nav-item"><a class="nav-link" href="music.html">Music Series</a></li><li class="nav-item"><a class="nav-link" href="math.html">Math Kits</a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="myCodeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">My Portfolio</a><ul class="dropdown-menu" aria-labelledby="myCodeDropdown"><li><a class="dropdown-item" href="essay/myAPI.html">My Open API</a></li><li><a class="dropdown-item" href="essay/wheel.html">Random Wheel</a></li><li><a class="dropdown-item" href="essay/work.html">Random Work Table</a></li><li><a class="dropdown-item" href="essay/nba.html">NBA G.O.A.T. Candidates</a></li><li><a class="dropdown-item" href="essay/stock.html">Stocks Analysis</a></li></ul></li><li class="nav-item"><a class="nav-link" href="about.html">About Me</a></li></ul></div></div></nav><div id="app" class="container mt-5"><h1 class="mb-4">Math Kits</h1><div class="row"><div class="col-md-6"><form @submit.prevent="calculate"><div class="mb-3"><label for="toolSelect" class="form-label">Select Calculation Tool:</label><select class="form-select" v-model="selectedTool"><option value="" disabled="disabled" selected="selected" hidden>Click to select</option><option value="random_number_generator">Random Number Generator</option><option value="average_variance_stdDev">Average, Variance, Standard Deviation</option><option value="cross_dot_product">Vector Cross Product, Vector Dot Product</option><option value="discrete_mathematics">Permutation, Combination, Homogeneous</option><option value="linear_equation_solver">Solve Linear Equations (2x2)</option></select></div><div v-if="selectedTool === 'random_number_generator'"><div class="mb-3"><label for="quantity" class="form-label">Number of Random Numbers:</label><input type="number" class="form-control" id="quantity" v-model="quantity" min="1"></div><div class="mb-3"><label for="min" class="form-label">Minimum Number:</label><input type="number" class="form-control" id="min" v-model="min"></div><div class="mb-3"><label for="max" the class="form-label">Maximum Number:</label><input type="number" class="form-control" id="max" v-model="max"></div></div><div v-else-if="selectedTool === 'average_variance_stdDev'"><div class="mb-3"><label for="numbers" class="form-label">Enter numbers (space-separated):</label><input type="text" class="form-control" id="numbers" v-model="inputNumbers"></div></div><div v-else-if="selectedTool === 'cross_dot_product'"><div class="mb-3"><label for="vectorA" class="form-label">Enter Vector A (space-separated):</label><input type="text" class="form-control" id="vectorA" v-model="vectorA"></div><div class="mb-3"><label for="vectorB" the class="form-label">Enter Vector B (space-separated):</label><input type="text" class="form-control" id="vectorB" v-model="vectorB"></div></div><div v-else-if="selectedTool === 'discrete_mathematics'"><div class="mb-3"><label for="n" class="form-label">Total Items (n):</label><input type="number" class="form-control" id="n" v-model="n"></div><div class="mb-3"><label for="r" class="form-label">Selected Items (r):</label><input type="number" class="form-control" id="r" v-model="r"></div></div><div v-if="selectedTool === 'linear_equation_solver'" class="mb-3"><div class="mb-3"><h5 class="text-primary">Enter Coefficients</h5></div><div class="row mb-3"><div class="col"><input type="number" class="form-control" v-model="linear1A" placeholder="A₁ (x)" step="0.5"></div><span class="col-auto fs-5">x +</span><div class="col"><input type="number" class="form-control" v-model="linear1B" placeholder="B₁ (y)" step="0.5"></div><span class="col-auto fs-5">y =</span><div class="col"><input type="number" class="form-control" v-model="linear1C" placeholder="C₁" step="0.5"></div></div><div class="row mb-3"><div class="col"><input type="number" class="form-control" v-model="linear2A" placeholder="A₂ (x)" step="0.5"></div><span class="col-auto fs-5">x +</span><div class="col"><input type="number" class="form-control" v-model="linear2B" placeholder="B₂ (y)" step="0.5"></div><span class="col-auto fs-5">y =</span><div class="col"><input type="number" class="form-control" v-model="linear2C" placeholder="C₂" step="0.5"></div></div></div><button type="submit" class="btn btn-primary">Calculate</button></form></div><div class="col-md-6"><div class="container"><div v-if="selectedTool === 'random_number_generator' && randomNumbers" class="alert alert-success mt-3"><p>Random Numbers:</p><p>{{ randomNumbers.join(', ') }}</p></div><div v-if="selectedTool === 'average_variance_stdDev'"><template v-if="average || variance || standardDeviation"><div v-if="average" class="alert alert-success mt-3"><p>Average: {{ average }}</p></div><div v-if="variance" class="alert alert-success mt-3"><p>Variance: {{ variance }}</p></div><div v-if="standardDeviation" class="alert alert-success mt-3"><p>Standard Deviation: {{ standardDeviation }}</p></div></template><div v-else class="alert alert-warning mt-3"><p>Please enter some numbers to calculate their statistics.</p></div></div><div v-else-if="selectedTool === 'cross_dot_product'"><template v-if="crossResult || dotResult"><div v-if="crossResult" class="alert alert-success mt-3"><p>Cross Product Result: ({{ crossResult.x }}, {{ crossResult.y }}, {{ crossResult.z }})</p><div v-if="dotResult" class="alert alert-success mt-3"><p>Dot Product Result: {{ dotResult }}</p></div></template><div v-else class="alert alert-warning mt-3"><p>Please enter vectors to calculate their cross and dot products.</p></div></div><div v-if="selectedTool === 'discrete_mathematics'"><template v-if="permResult || combResult || homProdResult"><div v-if="permResult" class="alert alert-success mt-3"><p>Permutation (P): {{ permResult }}</p></div><div v-if="combResult" class="alert alert-success mt-3"><p>Combination (C): {{ combResult }}</p></div><div v-if="homProdResult" class="alert alert-success mt-3"><p>Homogeneous Product (H): {{ homProdResult }}</p></div></template><div v-else class="alert alert-warning mt-3"><p>Please enter values for n and r to compute permutations, combinations, and homogeneous products.</p></div></div><div v-if="selectedTool === 'linear_equation_solver'"><template v-if="xSolution !== null && ySolution !== null"><div class="alert alert-success mt-3"><p>Solution: (x, y) = ({{ xSolution.toFixed(2) }}, {{ ySolution.toFixed(2) }})</p></div></template><div v-else class="alert alert-warning mt-3"><p>Please enter valid coefficients to solve the system of equations.</p></div></div></div></div><iframe src="https://lottie.host/embed/3143bdce-e8ff-44cb-b623-890d1059466a/2e9PjhsRN5.json"></iframe></div></div><div style="display:flex;justify-content:center;align-items:center;height:10vh"><iframe src="https://lottie.host/embed/84abc4be-1cca-4db2-980c-e796b1943206/OqXlE73zWi.json"></iframe></div><script src="https://unpkg.com/vue@3/dist/vue.global.js"></script><script>const {
                 createApp,
                 ref
             } = Vue;
             createApp({
                 setup() {
-                    // Set the reactive
-                    const selectedTool = ref(''); // Changed default selected tool here
+                    const selectedTool = ref('');
                     let quantity = ref(1);
                     let min = ref(0);
                     let max = ref(100);
                     let randomNumbers = ref(null);
+
                     let inputNumbers = ref('');
                     let average = ref(null);
                     let variance = ref(null);
                     let standardDeviation = ref(null);
+
                     let vectorA = ref('');
                     let vectorB = ref('');
                     let crossResult = ref(null);
                     let dotResult = ref(null);
+
                     let n = ref('');
                     let r = ref('');
                     let permResult = ref(null);
                     let combResult = ref(null);
                     let homProdResult = ref(null);
+
+                    let linear1A = ref('');
+                    let linear1B = ref('');
+                    let linear1C = ref('');
+                    let linear2A = ref('');
+                    let linear2B = ref('');
+                    let linear2C = ref('');
+                    let xSolution = ref(null);
+                    let ySolution = ref(null);
+
                     const calculate = () => {
                         if (selectedTool.value === 'random_number_generator') {
                             const generatedNumbers = [];
@@ -40,40 +52,64 @@
                         } else if (selectedTool.value === 'cross_dot_product') {
                             const vectorAArray = vectorA.value.split(' ').map(Number);
                             const vectorBArray = vectorB.value.split(' ').map(Number);
-                            // Calculating cross product
+
                             const crossProduct = [
                                 vectorAArray[1] * vectorBArray[2] - vectorAArray[2] * vectorBArray[1],
                                 vectorAArray[2] * vectorBArray[0] - vectorAArray[0] * vectorBArray[2],
                                 vectorAArray[0] * vectorBArray[1] - vectorAArray[1] * vectorBArray[0]
                             ];
+
                             crossResult.value = {
                                 x: crossProduct[0],
                                 y: crossProduct[1],
                                 z: crossProduct[2]
                             };
-                            // Calculating dot product
                             dotResult.value = vectorAArray[0] * vectorBArray[0] + vectorAArray[1] * vectorBArray[1] + vectorAArray[2] * vectorBArray[2];
-                        } else if (selectedTool.value === 'permutation_combination') {
+                        } else if (selectedTool.value === 'discrete_mathematics') {
                             const nVal = parseInt(n.value);
                             const rVal = parseInt(r.value);
                             // Permutation: P(n, r) = n! / (n-r)!
                             const permutation = factorial(nVal) / factorial(nVal - rVal);
-                            // Combination: C(n, r) = n! / (r! * (n-r)!)
                             const combination = factorial(nVal) / (factorial(rVal) * factorial(nVal - rVal));
-                            // Homogeneous Product (repeated combination): H(n, r) = C(n+r-1, r)
                             const homogeneousProduct = factorial(nVal + rVal - 1) / (factorial(rVal) * factorial(nVal - 1));
                             permResult.value = permutation;
                             combResult.value = combination;
                             homProdResult.value = homogeneousProduct;
+                        } else if (selectedTool.value === 'linear_equation_solver') {
+                            // Convert input values to numbers
+                            const A1 = parseFloat(linear1A.value);
+                            const B1 = parseFloat(linear1B.value);
+                            const C1 = parseFloat(linear1C.value);
+                            const A2 = parseFloat(linear2A.value);
+                            const B2 = parseFloat(linear2B.value);
+                            const C2 = parseFloat(linear2C.value);
+
+                            // Calculate determinant
+                            const determinant = A1 * B2 - A2 * B1;
+
+                            if (determinant === 0) {
+                                xSolution.value = null;
+                                ySolution.value = null;
+                                Swal.fire({
+                                    icon: "warning",
+                                    title: "No Unique Solution",
+                                    text: "This system has no unique solution (either no solution or infinitely many solutions).",
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: "OK"
+                                });
+                            } else {
+                                // Use Cramer's Rule
+                                xSolution.value = (C1 * B2 - B1 * C2) / determinant;
+                                ySolution.value = (A1 * C2 - C1 * A2) / determinant;
+                            }
                         }
 
                         function factorial(x) {
-                            if (x === 0) {
-                                return 1;
-                            }
+                            if (x === 0) return 1;
                             return x * factorial(x - 1);
                         }
                     };
+
                     return {
                         quantity,
                         min,
@@ -93,7 +129,16 @@
                         permResult,
                         combResult,
                         homProdResult,
+                        linear1A,
+                        linear1B,
+                        linear1C,
+                        linear2A,
+                        linear2B,
+                        linear2C,
+                        xSolution,
+                        ySolution,
                         calculate
                     };
+
                 }
             }).mount('#app');</script><script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script><script src="js/custom.js"></script></body></html>
