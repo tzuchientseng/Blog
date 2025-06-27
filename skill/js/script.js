@@ -8,29 +8,29 @@ $(document).ready(function(){
 				$('span.sk1').html("Python");
 				$('span.sk2').html("Java");
 				$('span.sk3').html("C++");
-				$('span.sk4').html("PHP");
-				$('span.sk5').html("NoodeJS");
-				$('span.sk6').html("DataBase");}
+				$('span.sk4').html("C");
+				$('span.sk5').html("Heroku Deployment");
+				$('span.sk6').html("DataBase SQL");}
 			//else
 				//$('#car').removeClass('selected')
 
 			if (p2){
 				$('span.sk1').html("TypeScript(JS)");
-				$('span.sk2').html("HTML");
-				$('span.sk3').html("CSS, bootstrap");
-				$('span.sk4').html("PhotoShop");
-				$('span.sk5').html("Illustrator");
-				$('span.sk6').html("?");}
+				$('span.sk2').html("Vue3");
+				$('span.sk3').html("Vue2");
+				$('span.sk4').html("React");
+				$('span.sk5').html("CSS, Bootstrap");
+				$('span.sk6').html("Flutter(Dart)");}
 			//else
 				//$('#bus').removeClass('selected')
 
 			if (p3){
-				$('span.sk1').html("Android SDK");
-				$('span.sk2').html("Version Control (Git)");
-				$('span.sk3').html("<div class='long'>3D modelling (SolidWorks, AutoCad, Pro/Engineer)</div>");
-				$('span.sk4').html("3D printing tech");
-				$('span.sk5').html("MS Office");
-				$('span.sk6').html("?");}
+				$('span.sk1').html("魔術表演");
+				$('span.sk2').html("木吉他");
+				$('span.sk3').html("鋼琴");
+				$('span.sk4').html("小提琴");
+				$('span.sk5').html("電吉他");
+				$('span.sk6').html("滑板");}
 			//else
 				//submit.attr('disabled','disabled')
 		}).eq(1).trigger('change');
